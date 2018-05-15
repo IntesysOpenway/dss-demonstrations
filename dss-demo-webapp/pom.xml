@@ -13,8 +13,17 @@
 	<packaging>war</packaging>
 	<name>DSS Demo: Web Application</name>
 	<description>DSS Demo: Web Application</description>
+	
+	<properties>
+		<!-- IOpenway: Aggiunte solamente per allineare il codice delle chiamate http a quello utilizzato nei vari progetti in Alfresco -->
+		<commons-httpclient.version>3.1</commons-httpclient.version>
+		<commons-codec.version>1.10</commons-codec.version>
+		<commons-lang.version>2.6</commons-lang.version>
+	</properties>
 
 	<build>
+		<!-- IOpenway: Mantenuto questo nome al war per retrocompatibilità con le versioni precedenti -->
+		<finalName>orange-ds-dss</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -354,6 +363,27 @@
 	       	</exclusion>
 	       </exclusions>
 		</dependency>
+		<!-- IOpenway: Aggiunte solamente per allineare il codice delle chiamate http a quello utilizzato nei vari progetti in Alfresco -->
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>${commons-httpclient.version}</version>
+		</dependency>
+		<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>${commons-lang.version}</version>
+			</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${commons-codec.version}</version>
+		</dependency>
+		<dependency>
+				<groupId>commons-collections</groupId>
+				<artifactId>commons-collections</artifactId>
+				<version>3.2.2</version>
+			</dependency> 
 	</dependencies>
 
 	<profiles>

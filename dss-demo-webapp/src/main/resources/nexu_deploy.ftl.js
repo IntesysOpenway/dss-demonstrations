@@ -16,13 +16,19 @@ var nexuVersion = "${nexuVersion}";
 
 $.get("${nexuUrl}/nexu-info", function(data) {
 	// something responded
-	if(data.version == nexuVersion) {
+	/*
+	 * Orange DS
+	 * Disabilitato controllo su versione nexU
+	 */
+    /*
+	if(data.version == nexuVersion) {*/
 		// valid version
 		// load nexu script 
 		console.log("Loading script...");
 		loadScript();
 	    $("#nexu_ready_alert").slideDown();
 	    $("#submit-button").prop('disabled', false);
+	    /*
 	} else {
 		// need update
 		$("#submit-button").html("Update NexU");
@@ -30,8 +36,10 @@ $.get("${nexuUrl}/nexu-info", function(data) {
 			console.log("Update NexU");
 			return false;
 		});
+		*/
 		
 	}
+	
 }).fail(function() {
 	// no response, NexU not installed or not started
 	$("#submit-button").html("Install NexU");

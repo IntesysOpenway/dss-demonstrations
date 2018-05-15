@@ -66,5 +66,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		messageSource.setBasenames("classpath:i18n/application");
 		return messageSource;
 	}
+	
+	/**
+     * Aggiunta per Orange DS DSS
+     */
+	@Bean
+    public MessageSource dssWebappMessageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasenames("classpath:i18n/validation");
+        return messageSource;
+    }
+	
 
 }

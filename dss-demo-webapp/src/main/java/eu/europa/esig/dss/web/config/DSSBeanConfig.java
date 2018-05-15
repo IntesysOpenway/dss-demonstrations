@@ -24,7 +24,6 @@ import eu.europa.esig.dss.client.http.commons.OCSPDataLoader;
 import eu.europa.esig.dss.client.http.commons.TimestampDataLoader;
 import eu.europa.esig.dss.client.http.proxy.ProxyConfig;
 import eu.europa.esig.dss.client.ocsp.OnlineOCSPSource;
-import eu.europa.esig.dss.client.tsp.OnlineTSPSource;
 import eu.europa.esig.dss.pades.signature.PAdESService;
 import eu.europa.esig.dss.signature.RemoteDocumentSignatureServiceImpl;
 import eu.europa.esig.dss.signature.RemoteMultipleDocumentsSignatureServiceImpl;
@@ -40,10 +39,15 @@ import eu.europa.esig.dss.validation.RemoteDocumentValidationService;
 import eu.europa.esig.dss.x509.KeyStoreCertificateSource;
 import eu.europa.esig.dss.x509.tsp.TSPSource;
 import eu.europa.esig.dss.xades.signature.XAdESService;
+import it.openway.orange.ds.dss.webapp.timestamp.DssWebappOnlineTSPSource;
 
+/**
+ * @author marco
+ *  Sono state fatte alcune modifiche manuali alla classe DSS per includere i servizio Openway
+ */
 @Configuration
 @PropertySource("classpath:dss.properties")
-@ComponentScan(basePackages = { "eu.europa.esig.dss" })
+@ComponentScan(basePackages = { "eu.europa.esig.dss" , "it.openway.orange.ds.dss.webapp"})
 public class DSSBeanConfig {
 
 	@Value("${default.validation.policy}")
@@ -81,6 +85,18 @@ public class DSSBeanConfig {
 
 	@Value("${dss.server.signing.keystore.password}")
 	private String serverSigningKeystorePassword;
+	
+	/**
+	 * Aggiunte per Orange DS DSS
+	 */
+	@Value("${tsp.server}")
+	private String tspServer;
+	
+	@Value("${tsp.username}")
+	private String tspUsername;
+	
+	@Value("${tsp.password}")
+	private String tspPassword;
 
 	@Autowired
 	private DataSource dataSource;
@@ -144,14 +160,6 @@ public class DSSBeanConfig {
 	@Bean
 	public TrustedListsCertificateSource trustedListSource() {
 		return new TrustedListsCertificateSource();
-	}
-
-	@Bean
-	public TSPSource tspSource() {
-		OnlineTSPSource onlineTSPSource = new OnlineTSPSource();
-		onlineTSPSource.setDataLoader(timestampDataLoader());
-		onlineTSPSource.setTspServer(tsaUrl);
-		return onlineTSPSource;
 	}
 
 	@Bean
@@ -270,5 +278,31 @@ public class DSSBeanConfig {
 		validationJob.setCheckTSLSignatures(true);
 		return validationJob;
 	}
+	
+	/**
+	 * Aggiunta per Orange DS DSS
+	 */
+	public DssWebappOnlineTSPSource dssWebappOnlineTspSource(){
+	    
+	    DssWebappOnlineTSPSource dssWebappOnlineTSPSource = new DssWebappOnlineTSPSource();
+	    dssWebappOnlineTSPSource.setTspServer(tspServer);
+	    dssWebappOnlineTSPSource.setUsername(tspUsername);
+	    dssWebappOnlineTSPSource.setPassword(tspPassword);
+	    dssWebappOnlineTSPSource.setDataLoader(dataLoader());
+	    return dssWebappOnlineTSPSource;
+	    
+	}
+	
+	/**
+     * Aggiunta per Orange DS DSS
+     */
+	@Bean
+    public TSPSource tspSource() {
+//        OnlineTSPSource onlineTSPSource = new OnlineTSPSource();
+//        onlineTSPSource.setDataLoader(timestampDataLoader());
+//        onlineTSPSource.setTspServer(tsaUrl);
+//        return onlineTSPSource;
+	    return dssWebappOnlineTspSource();
+    }
 
 }

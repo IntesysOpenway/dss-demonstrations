@@ -36,9 +36,9 @@ $.get("${nexuUrl}/nexu-info", function(data) {
 			console.log("Update NexU");
 			return false;
 		});
-		*/
 		
-	}
+		
+	}*/
 	
 }).fail(function() {
 	// no response, NexU not installed or not started
